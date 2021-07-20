@@ -13,6 +13,4 @@ Tech:
 
 Modern CSS:
 
-Styled Components
-
 ![alt text](https://i.imgur.com/co5pfX5.png "Styled Components") 
