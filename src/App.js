@@ -11,44 +11,71 @@ const UserContainer = styled.div`
 
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
 `
+const Load = styled.p`
+  font-size: 20px;
+  font-weight: 500;
+  color: white;
+`
 
-function fetchUser(amount = 6){
-  return fetch(`https://reqres.in/api/users/`)
+const fetchUser = (amount) => {
+  return fetch(`https://reqres.in/api/users?per_page=${amount}`)
     .then(response => response.json())
     .then(json => json.data)
     .catch(error => console.error)
+}
+
+const Loading = (props) => {
+  if(!props.show){
+    return null;
+  }
+
+  return (
+    <Load> Loading ... </Load>
+  );
 }
 
 class App extends React.Component {
   constructor(props){
     super(props);
 
-    this.state = { 
-      amount: 1,
-      data: []
+    this.state = {
+      amount: 6,
+      data: [],
+      show: true
     }
+
+    this.fetching = this.fetching.bind(this);
   }
 
   async componentDidMount(){
-    const result = await fetchUser();
+    const result = await fetchUser(this.state.amount);
     this.setState({data: result});
+    this.setState({show: !this.state.show});
+  }
+
+  async fetching(amount){
+    this.setState({show: !this.state.show});
+    const result = await fetchUser(amount);
+    this.setState({data: result});
+    this.setState({show: !this.state.show});
   }
 
   render(){
-
-    const User = this.state.data.map(function(item){
-      const { id, email, first_name, last_name, avatar } = item;
-      return <UserCard key={id} id={id} avatar={avatar} email={email} firstName={first_name} lastName={last_name} />
-    });
-
     return (
       <div className="App">
-        <Input fetch={fetchUser}/>
+        <Input fetch={this.fetching} amount={this.state.amount}/>
 
         <UserContainer>
-          {User}
+          {this.state.data.map((item) => {
+            const { id, email, first_name, last_name, avatar } = item;
+
+            return <UserCard key={id} id={id} avatar={avatar} email={email} firstName={first_name} lastName={last_name} />
+          })}
+
+          { <Loading show={this.state.show}/> }
         </UserContainer>
       </div>
     );

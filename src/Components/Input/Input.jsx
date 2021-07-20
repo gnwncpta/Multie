@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import App from '../../App';
+
 const InputContainer = styled.div`
     display: flex;
     align-items: center;
@@ -49,30 +51,24 @@ class Input extends React.Component {
     constructor(props){
         super(props);
         
-        this.state = {value: 1}
-        this.handleInput = this.handleInput.bind(this);
-        this.seeProps = this.seeProps.bind(this);
+        this.state = { value: this.props.amount };
         this.fetchUser = this.fetchUser.bind(this);
+        this.handleInput = this.handleInput.bind(this);
     }
 
     handleInput(event){
         this.setState({value: event.target.value});
     }
 
-    seeProps(){
-        console.log(this.props);
-    }
-
     async fetchUser(){
-        const data = await this.props.fetch();
-        console.log(data);
+        await this.props.fetch(this.state.value);
     }
 
     render(){
         return (
             <InputContainer>
                 <Info>Insert the amount of data will displayed</Info>
-                <InputField type="number" value={this.state.value} />
+                <InputField type="number" value={this.state.value} onChange={this.handleInput}/>
                 <Button onClick={this.fetchUser}>Fetch</Button>
             </InputContainer>
         )

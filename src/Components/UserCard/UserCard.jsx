@@ -12,29 +12,36 @@ const UserContainer = styled.div`
 `;
 
 const Name = styled.h2`
+    width: 150px;
     margin-top: 5px;
     font-size: 20px;
     font-weight: 600;
     color: white;
-`
+`;
 
 const Email = styled.p`
-    margin-top: 5px;
+    margin-top: 10px;
     font-size: 10px;
     font-weight: 400;
     color: white;
+`;
+
+const Image = styled.img`
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
 `
 
 function UserCard(props){
     const { email, firstName, lastName, avatar, id } = props;
 
     return (
-        <UserContainer>
-            <img src={avatar} alt={`${firstName} ${lastName}`} width="200px" height="200px"/>
+        <UserContainer id={id}>
+            <Image src={avatar} alt={`${firstName} ${lastName}`} />
             <Name>{`${firstName} ${lastName}`}</Name>
             <Email>{email}</Email>
         </UserContainer>
-    )
-}   
+    );
+}
 
 export default UserCard;
