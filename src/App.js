@@ -37,6 +37,17 @@ const Loading = (props) => {
   );
 }
 
+function User(props){
+  if(!props.show){
+    return null;
+  }
+
+  return props.data.map(item => {
+    const { id, email, first_name, last_name, avatar } = item;
+    return <UserCard key={id} id={id} avatar={avatar} email={email} firstName={first_name} lastName={last_name} />
+  });
+}
+
 class App extends React.Component {
   constructor(props){
     super(props);
@@ -44,23 +55,28 @@ class App extends React.Component {
     this.state = {
       amount: 6,
       data: [],
-      show: true
+      show: false,
+      showUser: false
     }
 
     this.fetching = this.fetching.bind(this);
   }
 
   async componentDidMount(){
+    this.setState({show: !this.state.show});
     const result = await fetchUser(this.state.amount);
     this.setState({data: result});
     this.setState({show: !this.state.show});
+    this.setState({showUser: !this.state.showUser});
   }
 
   async fetching(amount){
+    this.setState({showUser: !this.state.showUser});
     this.setState({show: !this.state.show});
     const result = await fetchUser(amount);
     this.setState({data: result});
     this.setState({show: !this.state.show});
+    this.setState({showUser: !this.state.showUser});
   }
 
   render(){
@@ -69,13 +85,9 @@ class App extends React.Component {
         <Input fetch={this.fetching} amount={this.state.amount}/>
 
         <UserContainer>
-          {this.state.data.map((item) => {
-            const { id, email, first_name, last_name, avatar } = item;
+          { <User show={this.state.showUser} data={this.state.data} /> }
 
-            return <UserCard key={id} id={id} avatar={avatar} email={email} firstName={first_name} lastName={last_name} />
-          })}
-
-          { <Loading show={this.state.show}/> }
+          { <Loading show={this.state.show} /> }
         </UserContainer>
       </div>
     );
