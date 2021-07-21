@@ -55,7 +55,7 @@ class App extends React.Component {
     this.state = {
       amount: 6,
       data: [],
-      show: false,
+      showLoading: false,
       showUser: false
     }
 
@@ -63,19 +63,21 @@ class App extends React.Component {
   }
 
   async componentDidMount(){
-    this.setState({show: !this.state.show});
+    this.setState({show: !this.state.showLoading});
+
     const result = await fetchUser(this.state.amount);
     this.setState({data: result});
-    this.setState({show: !this.state.show});
+    this.setState({show: !this.state.showLoading});
     this.setState({showUser: !this.state.showUser});
   }
 
   async fetching(amount){
     this.setState({showUser: !this.state.showUser});
-    this.setState({show: !this.state.show});
+    this.setState({show: !this.state.showLoading});
+    
     const result = await fetchUser(amount);
     this.setState({data: result});
-    this.setState({show: !this.state.show});
+    this.setState({show: !this.state.showLoading});
     this.setState({showUser: !this.state.showUser});
   }
 
@@ -87,7 +89,7 @@ class App extends React.Component {
         <UserContainer>
           { <User show={this.state.showUser} data={this.state.data} /> }
 
-          { <Loading show={this.state.show} /> }
+          { <Loading show={this.state.showLoading} /> }
         </UserContainer>
       </div>
     );
