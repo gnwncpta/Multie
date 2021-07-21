@@ -63,21 +63,21 @@ class App extends React.Component {
   }
 
   async componentDidMount(){
-    this.setState({show: !this.state.showLoading});
+    this.setState({showLoading: !this.state.showLoading});
 
     const result = await fetchUser(this.state.amount);
     this.setState({data: result});
-    this.setState({show: !this.state.showLoading});
+    this.setState({showLoading: !this.state.showLoading});
     this.setState({showUser: !this.state.showUser});
   }
 
   async fetching(amount){
     this.setState({showUser: !this.state.showUser});
-    this.setState({show: !this.state.showLoading});
+    this.setState({showLoading: !this.state.showLoading});
     
     const result = await fetchUser(amount);
     this.setState({data: result});
-    this.setState({show: !this.state.showLoading});
+    this.setState({showLoading: !this.state.showLoading});
     this.setState({showUser: !this.state.showUser});
   }
 
